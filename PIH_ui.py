@@ -25,12 +25,18 @@ rcParams['axes.unicode_minus'] = False
 
 plt.rcParams.update({'font.size':14})
 
+# 侧边栏展示 README.md（只显示到 "## 功能特点" 前）
 st.sidebar.title("项目说明")
 try:
     with open("README.md", "r", encoding="utf-8") as f:
-        st.sidebar.markdown(f.read(), unsafe_allow_html=True)
+        content = f.read()
+    cut_index = content.find("## 功能特点")
+    if cut_index != -1:
+        content = content[:cut_index]
+    st.sidebar.markdown(content, unsafe_allow_html=True)
 except FileNotFoundError:
     st.sidebar.info("未找到 README.md（将 README.md 放在项目根目录即可在此显示）")
+
 
 
 # 定义函数
