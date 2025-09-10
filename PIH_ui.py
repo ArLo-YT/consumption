@@ -4,7 +4,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # 设置绘图样式
-plt.rcParams['font.family'] = 'Heiti TC'
+plt.rcParams['font.family'] = 'sans-serif'
+plt.rcParams['font.sans-serif'] = ['SimHei', 'Arial', 'DejaVu Sans']
+
 plt.rcParams.update({'font.size':14})
 
 # 定义函数
