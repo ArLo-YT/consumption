@@ -25,6 +25,14 @@ rcParams['axes.unicode_minus'] = False
 
 plt.rcParams.update({'font.size':14})
 
+st.sidebar.title("项目说明")
+try:
+    with open("README.md", "r", encoding="utf-8") as f:
+        st.sidebar.markdown(f.read(), unsafe_allow_html=True)
+except FileNotFoundError:
+    st.sidebar.info("未找到 README.md（将 README.md 放在项目根目录即可在此显示）")
+
+
 # 定义函数
 def coeff(r, s):
     if np.abs(r)> 0.0001:
