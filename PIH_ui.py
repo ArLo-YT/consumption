@@ -164,6 +164,7 @@ def simulate_and_output(years, wage, A_t_init, r_c, l, grow_rate, final_wealth, 
 # Streamlit界面
 st.title("未来消费规划")
 
+
 # 用户参数
 years = st.number_input("周期（最小5年，最大80年）", min_value=5, max_value=80, value=30)
 A_t_init = st.number_input("当前资产（可为负数）", value=0.0)
