@@ -30,7 +30,7 @@ st.sidebar.title("项目说明")
 try:
     with open("README.md", "r", encoding="utf-8") as f:
         content = f.read()
-    cut_index = content.find("## 使用示例")
+    cut_index = content.find("## 环境依赖")
     if cut_index != -1:
         content = content[:cut_index]
     st.sidebar.markdown(content, unsafe_allow_html=True)
