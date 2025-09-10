@@ -213,5 +213,5 @@ if st.button("开始计算",disabled=not submit_enabled):
     st.pyplot(fig)
     st.subheader("每年消费的购买力变化")
     st.pyplot(fig_inflation)
-    st.subheader("通胀修正后的购买力总和（按照第一年物价）")
-    st.subheader(round(c_t_total,2))
+    # st.subheader("通胀修正后的购买力总和（按照第一年物价）")
+    # st.subheader(round(c_t_total,2))
