@@ -4,8 +4,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # 设置绘图样式
-plt.rcParams['font.family'] = 'sans-serif'
-plt.rcParams['font.sans-serif'] = ['SimHei', 'Arial', 'DejaVu Sans']
+plt.rcParams['font.sans-serif'] = ['SimHei']       # 设置中文字体（优先）
+plt.rcParams['axes.unicode_minus'] = False  
 
 plt.rcParams.update({'font.size':14})
 
@@ -163,7 +163,6 @@ def simulate_and_output(years, wage, A_t_init, r_c, l, grow_rate, final_wealth, 
 
 # Streamlit界面
 st.title("未来消费规划")
-
 
 # 用户参数
 years = st.number_input("周期（最小5年，最大80年）", min_value=5, max_value=80, value=30)
