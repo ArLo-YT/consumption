@@ -59,19 +59,16 @@ def parse_custom_income(input_str, years):
             continue
     return income_dict
 
-def simulate_and_output(years, wage, A_t_init, r_c, l, grow_rate, final_wealth, r_ins,custom_income_str):
-    
+def simulate_and_output(years, wage, A_t_init, r_c, l, grow_rate, final_wealth, r_ins, custom_income_str):
     y_t = income(wage, grow_rate, years)
 
     # 解析自定义收入
     custom_income = parse_custom_income(custom_income_str, years)
-
-    # 替换对应年份的收入
     for year_idx in custom_income:
         y_t[year_idx] = custom_income[year_idx]
 
-    # 结果数据框
-    results = pd.DataFrame(columns=["年份", "年初资产", "年内收入", "全年消费", "年末资产"])
+    # —— 变更点：不再提前建 DataFrame，而是先用列表收集 —— 
+    rows = []
 
     A_t = A_t_init
     c_t_list = []
@@ -86,14 +83,14 @@ def simulate_and_output(years, wage, A_t_init, r_c, l, grow_rate, final_wealth, 
     A_t_min = 0
     A_t_max = 0
     A_t_warn = 0
-    for i in range(years):
 
+    for i in range(years):
         r_e = r - l
         year_label = i + 1
         initial_A = A_t
         s = years - i
-        Y_t = pv(y_t[i:years], r+dr)
-        c_t = consump(r, s, A_t, Y_t, r_e, final_wealth,r_ins+dr)
+        Y_t = pv(y_t[i:years], r + dr)
+        c_t = consump(r, s, A_t, Y_t, r_e, final_wealth, r_ins + dr)
 
         A_t = A_t * (1 + r) + y_t[i] - c_t
 
@@ -101,64 +98,67 @@ def simulate_and_output(years, wage, A_t_init, r_c, l, grow_rate, final_wealth, 
         consumption_inflation_adjusted = c_t / ((1 + l) ** i)
         c_t_inflation_adjusted.append(consumption_inflation_adjusted)
 
-        results = results.append({
+        # —— 变更点：把一行结果收集到 rows 列表 —— 
+        rows.append({
             "年份": year_label,
             "年初资产": round(initial_A, 2),
             "年内收入": round(y_t[i], 2),
             "全年消费": round(c_t, 2),
             "年末资产": round(A_t, 2)
-        }, ignore_index=True)
+        })
 
         c_t_list.append(c_t)
         A_t_list.append(A_t)
 
-    # 警告提示（已有逻辑）
+        # 警告逻辑（保持不变）
         if c_t < 0:
             st.warning("很遗憾，当前收入难以支持目标资产，请努力增加收入或调整目标")
             st.stop()
-        
-        if A_t<A_t_min:
-            A_t_min =A_t
 
-        if A_t>A_t_max:
-            A_t_max =A_t
-        
-        if A_t_max>0.0001 and A_t_min<-0.0001:
+        if A_t < A_t_min:
+            A_t_min = A_t
+
+        if A_t > A_t_max:
+            A_t_max = A_t
+
+        if A_t_max > 0.0001 and A_t_min < -0.0001:
             A_t_warn = 1
 
     if A_t_warn:
         st.warning("当前周期内同时出现净资产和净负债，相应的，也应同时存在存款和贷款利率，因此结果可能不准确，仅供参考")
 
-    # 原有图表：收入与资产变化
-    fig, axs = plt.subplots(2,1,figsize=(10, 12))
+    # —— 变更点：循环结束后一次性创建 DataFrame —— 
+    results = pd.DataFrame(rows, columns=["年份", "年初资产", "年内收入", "全年消费", "年末资产"])
+
+    # 原有图表
+    fig, axs = plt.subplots(2, 1, figsize=(10, 12))
     time = list(range(1, years + 1))
-    axs[0].plot(time,y_t,color='green',label='全年收入')
-    axs[0].plot(time,c_t_list,color='orange',label='全年消费')
+    axs[0].plot(time, y_t, color='green', label='全年收入')
+    axs[0].plot(time, c_t_list, color='orange', label='全年消费')
     axs[0].set_title('未来收入、消费')
     axs[0].set_xlabel('')
     axs[0].set_ylabel('')
     axs[0].legend()
 
-
-    axs[1].plot(time,A_t_list)
+    axs[1].plot(time, A_t_list)
     axs[1].set_title('年末资产')
     axs[1].set_xlabel('年份')
     axs[1].set_ylabel('')
 
+    axs[0].grid(True, axis='y', linestyle='--', alpha=0.7)
+    axs[1].grid(True, axis='y', linestyle='--', alpha=0.7)
 
-    axs[0].grid(True,axis='y', linestyle='--', alpha=0.7)
-    axs[1].grid(True,axis='y', linestyle='--', alpha=0.7)
-    
     # 新增图表：每年消费的购买力变化
     fig_inflation, ax_inflation = plt.subplots(figsize=(10, 4))
     ax_inflation.plot(time, c_t_inflation_adjusted, color='blue')
     ax_inflation.set_title("通胀修正后消费购买力变化（按照第一年物价）")
     ax_inflation.set_xlabel("年份")
     ax_inflation.set_ylabel("")
-    ax_inflation.grid(True, axis='y',linestyle='--', alpha=0.7)
+    ax_inflation.grid(True, axis='y', linestyle='--', alpha=0.7)
 
     c_t_inflation_adjusted_total = sum(c_t_inflation_adjusted)
-    return fig, results, fig_inflation,c_t_inflation_adjusted_total
+    return fig, results, fig_inflation, c_t_inflation_adjusted_total
+
 # Streamlit界面
 st.title("未来消费规划")
 
