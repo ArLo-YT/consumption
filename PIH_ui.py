@@ -8,18 +8,13 @@ from matplotlib import font_manager, rcParams
 import os
 
 # 尝试使用系统已有的中文字体
-candidate_fonts = ["SimHei", "Microsoft YaHei", "Arial Unicode MS", "Noto Sans CJK SC"]
 found_font = None
-for f in candidate_fonts:
-    if f in [fm.name for fm in font_manager.fontManager.ttflist]:
-        found_font = f
-        break
 
 if found_font:
     rcParams['font.family'] = found_font
 else:
     # 如果系统没中文字体，则加载项目自带字体
-    font_path = os.path.join("fonts", "SimHei.ttf")  # 确保你把 SimHei.ttf 放在项目的 fonts/ 目录下
+    font_path = os.path.join("simhei.ttf")  # 确保你把 SimHei.ttf 放在项目的 fonts/ 目录下
     if os.path.exists(font_path):
         font_manager.fontManager.addfont(font_path)
         rcParams['font.family'] = font_manager.FontProperties(fname=font_path).get_name()
