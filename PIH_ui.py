@@ -211,6 +211,7 @@ def simulate_and_output(years, wage, A_t_init, r_c, l, grow_rate, final_wealth, 
     axs[0].set_title('未来收入与消费', fontsize=18, pad=12)
     axs[0].set_ylabel('金额', fontsize=14)
     _beautify_axes(axs[0])
+    axs[0].xaxis.set_major_locator(MaxNLocator(integer=True))
     _annotate_last(axs[0], time, y_t)
     _annotate_last(axs[0], time, c_t_list)
     axs[0].legend(frameon=False, fontsize=13, ncols=2, loc='upper left')
@@ -222,6 +223,7 @@ def simulate_and_output(years, wage, A_t_init, r_c, l, grow_rate, final_wealth, 
     axs[1].set_ylabel('金额', fontsize=14)
     axs[1].axhline(0, linewidth=1.0, linestyle='--', alpha=0.4)
     _beautify_axes(axs[1])
+    axs[1].xaxis.set_major_locator(MaxNLocator(integer=True))
     _annotate_last(axs[1], time, A_t_list)
 
     # 新增图表：每年消费的购买力变化
@@ -231,6 +233,7 @@ def simulate_and_output(years, wage, A_t_init, r_c, l, grow_rate, final_wealth, 
     ax_inflation.set_xlabel("年份", fontsize=14)
     ax_inflation.set_ylabel("购买力", fontsize=14)
     _beautify_axes(ax_inflation, y_ticks=5)
+    ax_inflation.xaxis.set_major_locator(MaxNLocator(integer=True))
     _annotate_last(ax_inflation, time, c_t_inflation_adjusted)
 
     c_t_inflation_adjusted_total = sum(c_t_inflation_adjusted)
