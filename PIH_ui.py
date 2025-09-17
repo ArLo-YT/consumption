@@ -403,7 +403,7 @@ if 'run_clicked' not in st.session_state:
     st.session_state['run_clicked'] = False
 
 if run_clicked:
-    st.session_state['run_clicked'] = True
+    st.session_state['run_clicked'] = True\n    # 点击“开始计算”时，先清空旧结果，确保不会展示上一次的输出\n    st.session_state.update({\n        "show_results": False,\n        "out_df": None,\n        "out_png_main": None,\n        "out_png_infl": None,\n        "out_csv": None,\n        "warn_net_assets": False,\n        "fatal_msg": None,\n    })
     fig, df_results, fig_inflation, c_t_total, msgs = simulate_and_output(
         years, wage, A_t_init, r_c, l, grow_rate, final_wealth, r_ins, custom_income_input
     )
