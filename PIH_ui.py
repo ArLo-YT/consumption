@@ -341,7 +341,7 @@ custom_income_input = st.text_area("输入自定义收入", height=100,
                                    value=st.session_state["custom_income_str"], key="custom_income_str")
 
 
-if st.button("开始计算",disabled=not submit_enabled):
+if st.button("开始计算"):
     fig, df_results, fig_inflation,c_t_total = simulate_and_output(
         years, wage, A_t_init, r_c, l, grow_rate, final_wealth, r_ins,custom_income_input
     )
