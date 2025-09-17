@@ -196,8 +196,7 @@ def simulate_and_output(years, wage, A_t_init, r_c, l, grow_rate, final_wealth, 
             A_t_warn = 1
 
     if A_t_warn:
-        st.markdown("⚠️ **当前周期内同时出现净资产和净负债，相应的，也应同时存在存款和贷款利率，因此结果会略有偏差，仅供参考**")
-
+        st.session_state["warn_net_assets"] = True
 
 
     # —— 变更点：循环结束后一次性创建 DataFrame —— 
@@ -377,6 +376,7 @@ st.session_state.setdefault("out_png_infl", None)
 st.session_state.setdefault("out_csv", None)
 
 if st.button("开始计算"):
+    st.session_state["warn_net_assets"] = False
     fig, df_results, fig_inflation, c_t_total = simulate_and_output(
         years, wage, A_t_init, r_c, l, grow_rate, final_wealth, r_ins, custom_income_input
     )
@@ -432,4 +432,16 @@ if st.session_state.get("show_results") and st.session_state.get("out_df") is no
         key="dl_png_infl_cached"
     )
 
+if st.session_state.get("warn_net_assets", False):
+    st.markdown("""
+<div style="
+    padding: 12px 14px;
+    border-left: 6px solid #f59e0b;
+    background: rgba(255, 215, 0, 0.12);
+    border-radius: 6px;
+    ">
+  <strong>⚠️ 提示：</strong> 当前周期内同时出现净资产和净负债，相应的，也应同时存在存款和贷款利率，
+  因此结果会略有偏差，仅供参考。
+</div>
+""", unsafe_allow_html=True)
 
