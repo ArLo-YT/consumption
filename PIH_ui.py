@@ -330,7 +330,7 @@ if st.button("一键填充该场景"):
     _load_preset_to_state(PRESETS[preset_name])
     st.success(f"已载入预设：{preset_name}")
 
-st.caption("提示：载入后你仍可在下方继续微调所有参数；“自定义收入”会被预设覆盖为对应示例。")
+st.caption("提示：载入后你仍可在下方继续调整所有参数。")
 
 
 # 用户参数（把 value 改为从 session_state 读取，并增加 key）
