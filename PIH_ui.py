@@ -221,6 +221,7 @@ def simulate_and_output(years, wage, A_t_init, r_c, l, grow_rate, final_wealth, 
     axs[1].set_xlabel('年份', fontsize=14)
     axs[1].set_ylabel('金额', fontsize=14)
     axs[1].axhline(0, linewidth=1.0, linestyle='--', alpha=0.4)
+    axs[1].fill_between(time, A_t_list, 0, where=(np.array(A_t_list)<0), alpha=0.08, color='red')
     _beautify_axes(axs[1])
     _annotate_last(axs[1], time, A_t_list)
 
@@ -229,7 +230,7 @@ def simulate_and_output(years, wage, A_t_init, r_c, l, grow_rate, final_wealth, 
     ax_inflation.plot(time, c_t_inflation_adjusted, color='red', linewidth=2.2, marker='o', markersize=4)
     ax_inflation.set_title("通胀修正后消费购买力（以第1年物价为基准）", fontsize=18, pad=10)
     ax_inflation.set_xlabel("年份", fontsize=14)
-    ax_inflation.set_ylabel("金额", fontsize=14)
+    ax_inflation.set_ylabel("购买力", fontsize=14)
     _beautify_axes(ax_inflation, y_ticks=5)
     _annotate_last(ax_inflation, time, c_t_inflation_adjusted)
 
