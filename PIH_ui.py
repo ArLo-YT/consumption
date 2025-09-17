@@ -334,7 +334,7 @@ st.session_state.setdefault("fatal_msg", None)
 st.title("消费规划模拟工具")
 
 # 顶部操作条：开始计算按钮上移 + 载入预设
-op_col1, op_col2 = st.columns([1, 1])
+op_col1, op_col2 = st.columns([1, 1], vertical_alignment="top")
 with op_col1:
     st.subheader("默认例子")
     preset_name = st.selectbox("选择一个场景",
@@ -358,6 +358,7 @@ with op_col2:
             "warn_net_assets": False,
             "fatal_msg": None,
         })
+    st.write("")
 
 st.divider()  # —— 输入与结果的清晰分界线 ——
 
