@@ -334,20 +334,16 @@ st.session_state.setdefault("fatal_msg", None)
 st.title("消费规划模拟工具")
 
 # 顶部操作条：开始计算按钮上移 + 载入预设
-op_col1, op_col2 = st.columns([1, 1])
-
-with op_col1:
-    st.markdown("<div class='op-card'>", unsafe_allow_html=True)
+# 顶部操作条：默认例子 + 操作（上下结构）
+with st.container():
     st.subheader("默认例子")
     preset_name = st.selectbox("选择一个场景", list(PRESETS.keys()), index=0)
     if st.button("一键填充该场景", use_container_width=True):
         _load_preset_to_state(PRESETS[preset_name])
         st.success(f"已载入预设：{preset_name}")
         st.caption("提示：载入后你仍可在下方继续调整所有参数。")
-    st.markdown("</div>", unsafe_allow_html=True)
 
-with op_col2:
-    st.markdown("<div class='op-card'>", unsafe_allow_html=True)
+with st.container():
     st.subheader("操作")
     run_clicked = st.button("▶️ 开始计算", type="primary", use_container_width=True)
     if st.button("🔄 清空结果", use_container_width=True):
@@ -360,7 +356,6 @@ with op_col2:
             "warn_net_assets": False,
             "fatal_msg": None,
         })
-    # 可选：一个小的占位，确保内容贴顶且视觉平衡
 
 
 st.divider()  # —— 输入与结果的清晰分界线 ——
