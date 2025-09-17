@@ -361,52 +361,66 @@ custom_income_input = st.text_area("输入自定义收入", height=100,
                                    value=st.session_state["custom_income_str"], key="custom_income_str")
 
 
-if st.button("开始计算"):
-    fig, df_results, fig_inflation,c_t_total = simulate_and_output(
-        years, wage, A_t_init, r_c, l, grow_rate, final_wealth, r_ins,custom_income_input
-    )
-    st.subheader("每年收入、消费和资产记录")
-    st.dataframe(df_results)
-    st.pyplot(fig, use_container_width=True)
-    st.subheader("每年消费的购买力变化")
-    st.pyplot(fig_inflation, use_container_width=True)
-    # st.subheader("通胀修正后的购买力总和（按照第一年物价）")
-    # st.subheader(round(c_t_total,2))
+st.session_state.setdefault("show_results", False)
+st.session_state.setdefault("out_df", None)
+st.session_state.setdefault("out_png_main", None)
+st.session_state.setdefault("out_png_infl", None)
+st.session_state.setdefault("out_csv", None)
 
-    # —— 下载导出区 ——
-    from io import BytesIO
-    st.subheader("下载导出")
-    
-    # CSV
-    csv_bytes = df_results.to_csv(index=False).encode("utf-8-sig")
-    st.download_button(
-        label="下载数据",
-        data=csv_bytes,
-        file_name="消费规划结果.csv",
-        mime="text/csv",
-        use_container_width=True
+if st.button("开始计算"):
+    fig, df_results, fig_inflation, c_t_total = simulate_and_output(
+        years, wage, A_t_init, r_c, l, grow_rate, final_wealth, r_ins, custom_income_input
     )
-    
-    # 图 PNG（两张）
+
+    # —— 缓存导出资源到 session_state（关键）——
+    from io import BytesIO
     def _fig_to_png_bytes(f):
         buf = BytesIO()
         f.savefig(buf, format="png", dpi=180, bbox_inches="tight")
         buf.seek(0)
-        return buf
-    
+        return buf.getvalue()
+
+    st.session_state["out_df"] = df_results
+    st.session_state["out_png_main"] = _fig_to_png_bytes(fig)
+    st.session_state["out_png_infl"] = _fig_to_png_bytes(fig_inflation)
+    st.session_state["out_csv"] = df_results.to_csv(index=False).encode("utf-8-sig")
+
+    st.session_state["show_results"] = True
+    st.rerun()
+
+
+if st.session_state.get("show_results") and st.session_state.get("out_df") is not None:
+    st.subheader("每年收入、消费和资产记录")
+    st.dataframe(st.session_state["out_df"])
+
+    st.subheader("图表")
+    st.image(st.session_state["out_png_main"], use_column_width=True, caption="收入-消费-资产")
+    st.image(st.session_state["out_png_infl"], use_column_width=True, caption="通胀修正后的购买力")
+
+    st.subheader("下载导出")
+    st.download_button(
+        label="下载数据（CSV）",
+        data=st.session_state["out_csv"],
+        file_name="消费规划结果.csv",
+        mime="text/csv",
+        use_container_width=True,
+        key="dl_csv_cached"
+    )
     st.download_button(
         label="下载图像（收入-消费-资产 PNG）",
-        data=_fig_to_png_bytes(fig).getvalue(),
+        data=st.session_state["out_png_main"],
         file_name="income_consumption_assets.png",
         mime="image/png",
-        use_container_width=True
+        use_container_width=True,
+        key="dl_png_main_cached"
     )
     st.download_button(
         label="下载图像（通胀修正后购买力 PNG）",
-        data=_fig_to_png_bytes(fig_inflation).getvalue(),
+        data=st.session_state["out_png_infl"],
         file_name="inflation_adjusted_consumption.png",
         mime="image/png",
-        use_container_width=True
+        use_container_width=True,
+        key="dl_png_infl_cached"
     )
 
 
