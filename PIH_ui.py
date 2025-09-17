@@ -282,22 +282,10 @@ if st.button("开始计算",disabled=not submit_enabled):
     # CSV
     csv_bytes = df_results.to_csv(index=False).encode("utf-8-sig")
     st.download_button(
-        label="下载数据（CSV）",
+        label="下载数据",
         data=csv_bytes,
         file_name="消费规划结果.csv",
         mime="text/csv",
-        use_container_width=True
-    )
-    
-    # Excel
-    xbuf = BytesIO()
-    with pd.ExcelWriter(xbuf, engine="openpyxl") as writer:
-        df_results.to_excel(writer, sheet_name="results", index=False)
-    st.download_button(
-        label="下载数据（Excel）",
-        data=xbuf.getvalue(),
-        file_name="消费规划结果.xlsx",
-        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         use_container_width=True
     )
     
