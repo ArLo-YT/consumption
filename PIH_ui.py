@@ -196,10 +196,8 @@ def simulate_and_output(years, wage, A_t_init, r_c, l, grow_rate, final_wealth, 
             A_t_warn = 1
 
     if A_t_warn:
-        st.session_state["show_warn"] = True
-    
-    if st.session_state.get("show_warn", False):
-        st.warning("当前周期内同时出现净资产和净负债，相应的，也应同时存在存款和贷款利率，因此结果会略有偏差，仅供参考")
+        st.markdown("⚠️ **当前周期内同时出现净资产和净负债，相应的，也应同时存在存款和贷款利率，因此结果会略有偏差，仅供参考**")
+
 
 
     # —— 变更点：循环结束后一次性创建 DataFrame —— 
