@@ -333,19 +333,40 @@ st.session_state.setdefault("fatal_msg", None)
 
 st.title("消费规划模拟工具")
 
+st.markdown("""
+<style>
+/* 操作区两栏的卡片统一视觉高度 */
+.op-card {
+  background: white;
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 12px;
+  padding: 14px 16px;
+  min-height: 240px;      /* 统一的最小高度，可按需微调 200~300 */
+  box-sizing: border-box;
+}
+/* 窄屏时不强制高度，避免挤压 */
+@media (max-width: 980px) {
+  .op-card { min-height: auto; }
+}
+</style>
+""", unsafe_allow_html=True)
+
+
 # 顶部操作条：开始计算按钮上移 + 载入预设
 op_col1, op_col2 = st.columns([1, 1], vertical_alignment="top")
+
 with op_col1:
+    st.markdown("<div class='op-card'>", unsafe_allow_html=True)
     st.subheader("默认例子")
-    preset_name = st.selectbox("选择一个场景",
-        list(PRESETS.keys()), index=0
-    )
+    preset_name = st.selectbox("选择一个场景", list(PRESETS.keys()), index=0)
     if st.button("一键填充该场景", use_container_width=True):
         _load_preset_to_state(PRESETS[preset_name])
         st.success(f"已载入预设：{preset_name}")
         st.caption("提示：载入后你仍可在下方继续调整所有参数。")
+    st.markdown("</div>", unsafe_allow_html=True)
 
 with op_col2:
+    st.markdown("<div class='op-card'>", unsafe_allow_html=True)
     st.subheader("操作")
     run_clicked = st.button("▶️ 开始计算", type="primary", use_container_width=True)
     if st.button("🔄 清空结果", use_container_width=True):
@@ -358,7 +379,10 @@ with op_col2:
             "warn_net_assets": False,
             "fatal_msg": None,
         })
+    # 可选：一个小的占位，确保内容贴顶且视觉平衡
     st.write("")
+    st.markdown("</div>", unsafe_allow_html=True)
+
 
 st.divider()  # —— 输入与结果的清晰分界线 ——
 
