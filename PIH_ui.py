@@ -206,8 +206,8 @@ def simulate_and_output(years, wage, A_t_init, r_c, l, grow_rate, final_wealth, 
     time = list(range(1, years + 1))
     
     # 上图：收入 & 消费（两条线）
-    axs[0].plot(time, y_t, linewidth=2.2, marker='o', markersize=4, label='全年收入')
-    axs[0].plot(time, c_t_list, linewidth=2.2, marker='o', markersize=4, label='全年消费')
+    axs[0].plot(time, y_t, color='blue', linewidth=2.2, marker='o', markersize=4, label='全年收入')
+    axs[0].plot(time, c_t_list, color='orange', linewidth=2.2, marker='o', markersize=4, label='全年消费')
     axs[0].set_title('未来收入与消费', fontsize=18, pad=12)
     axs[0].set_ylabel('金额', fontsize=14)
     _beautify_axes(axs[0])
@@ -216,7 +216,7 @@ def simulate_and_output(years, wage, A_t_init, r_c, l, grow_rate, final_wealth, 
     axs[0].legend(frameon=False, fontsize=13, ncols=2, loc='upper left')
     
     # 下图：年末资产
-    axs[1].plot(time, A_t_list, linewidth=2.2, marker='o', markersize=4)
+    axs[1].plot(time, A_t_list, color='black', linewidth=2.2, marker='o', markersize=4)
     axs[1].set_title('年末资产', fontsize=18, pad=12)
     axs[1].set_xlabel('年份', fontsize=14)
     axs[1].set_ylabel('金额', fontsize=14)
@@ -226,7 +226,7 @@ def simulate_and_output(years, wage, A_t_init, r_c, l, grow_rate, final_wealth, 
 
     # 新增图表：每年消费的购买力变化
     fig_inflation, ax_inflation = plt.subplots(figsize=(10, 4.5), constrained_layout=True)
-    ax_inflation.plot(time, c_t_inflation_adjusted, linewidth=2.2, marker='o', markersize=4)
+    ax_inflation.plot(time, c_t_inflation_adjusted, color='orange', linewidth=2.2, marker='o', markersize=4)
     ax_inflation.set_title("通胀修正后消费购买力（以第1年物价为基准）", fontsize=18, pad=10)
     ax_inflation.set_xlabel("年份", fontsize=14)
     ax_inflation.set_ylabel("金额", fontsize=14)
