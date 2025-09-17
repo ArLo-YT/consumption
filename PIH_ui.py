@@ -271,7 +271,7 @@ PRESETS = {
     "天降横财": {
         "years": 30,
         "A_t_init": 100000.0,
-        "final_wealth": 300000.0,
+        "final_wealth": 350000.0,
         "wage": 80000.0,
         "grow_rate": 0.00,   
         "r_c": 0.02,         
