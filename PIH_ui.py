@@ -236,32 +236,110 @@ def simulate_and_output(years, wage, A_t_init, r_c, l, grow_rate, final_wealth, 
     c_t_inflation_adjusted_total = sum(c_t_inflation_adjusted)
     return fig, results, fig_inflation, c_t_inflation_adjusted_total
 
+
+PRESETS = {
+    "应届毕业生起步": {
+        "years": 30,
+        "A_t_init": 10000.0,
+        "final_wealth": 0.0,
+        "wage": 80000.0,
+        "grow_rate": 0.06,   # 6%
+        "r_c": 0.03,         # 3%
+        "l": 0.02,           # 2%
+        "r_ins": 0.00,       # 0%
+        "custom_income_str": "5:120000, 10:180000"  # 5年&10年跳涨
+    },
+    "房贷+育儿期": {
+        "years": 25,
+        "A_t_init": -200000.0,
+        "final_wealth": 200000.0,
+        "wage": 180000.0,
+        "grow_rate": 0.03,
+        "r_c": 0.045,
+        "l": 0.025,
+        "r_ins": -0.01,      # 偏好当下消费
+        "custom_income_str": "1:220000, 6:260000, 12:320000"
+    },
+    "临近退休（稳健）": {
+        "years": 20,
+        "A_t_init": 800000.0,
+        "final_wealth": 500000.0,
+        "wage": 150000.0,
+        "grow_rate": 0.01,
+        "r_c": 0.025,
+        "l": 0.02,
+        "r_ins": 0.015,      # 偏好未来消费
+        "custom_income_str": "3:180000, 8:160000, 12:140000"
+    }
+}
+
+def _load_preset_to_state(preset: dict):
+    """把预设填入 session_state，用于一键回填到控件。"""
+    for k, v in preset.items():
+        st.session_state[k] = v
+
+# 保证首次有默认值
+for k, v in {
+    "years": 30, "A_t_init": 0.0, "final_wealth": 0.0, "wage": 100000.0,
+    "grow_rate": 0.01, "r_c": 0.03, "l": 0.02, "r_ins": 0.0,
+    "custom_income_str": ""
+}.items():
+    st.session_state.setdefault(k, v)
+
+
+
+
 # Streamlit界面
 st.title("消费规划模拟工具")
 
-# 用户参数
-years = st.number_input("周期（最小5年，最大80年）", min_value=5, max_value=80, value=30)
-A_t_init = st.number_input("当前资产（可为负数）", value=0.0)
-final_wealth = st.number_input("最终目标资产（大于等于0）", min_value=0, value=0)
-wage = st.number_input("当前年薪（大于0）", min_value=0.01, value=100000.0)
-grow_rate = st.slider("预期薪水增长率（-5% 到20%）", min_value=-5.0, max_value=20.0, value=1., step=0.1) / 100
-r_c = st.slider("年利率（最大20%，当前周期内负债较多请用贷款利率）", min_value=0.0, max_value=20.0, value=3., step=0.1) / 100
-# r_d = st.slider("贷款利率（最大20%）", min_value=0.0, max_value=20.0, value=3.0, step=0.1) / 100
+# ==== Presets（默认事例）UI：选择 & 一键填充 ====
+st.subheader("默认事例")
+col1, col2 = st.columns([2, 1])
+with col1:
+    preset_name = st.selectbox("选择一个场景（可随时切换，不影响你之后的手动修改）",
+                               list(PRESETS.keys()), index=0)
+with col2:
+    if st.button("一键填充该场景"):
+        _load_preset_to_state(PRESETS[preset_name])
+        st.success(f"已载入预设：{preset_name}")
 
-submit_enabled = True
-# if r_c <= r_d:
-#     submit_enabled = True
-# else:
-#     submit_enabled = False
-#     st.write("贷款利率不能少于存款利率。")
-
-l = st.slider("通胀率（-5% 到20%）", min_value=-5.0, max_value=20.0, value=2.0, step=0.1) / 100
-r_ins = st.slider("消费偏好修正（-5% 到5%，+表示偏好未来消费，-表示偏好当下消费）", min_value=-5.0, max_value=5.0, value=0.0, step=0.1) / 100
+st.caption("提示：载入后你仍可在下方继续微调所有参数；“自定义收入”会被预设覆盖为对应示例。")
 
 
-st.subheader("自定义某些年份的收入（编号从1开始，例如： '1： 100000，5:200000' 表示第一年收入为100000，第5年收入为200000）")
+# 用户参数（把 value 改为从 session_state 读取，并增加 key）
+years = st.number_input("周期（最小5年，最大80年）", min_value=5, max_value=80,
+                        value=int(st.session_state["years"]), key="years")
+A_t_init = st.number_input("当前资产（可为负数）", value=float(st.session_state["A_t_init"]), key="A_t_init")
+final_wealth = st.number_input("最终目标资产（大于等于0）", min_value=0,
+                               value=int(st.session_state["final_wealth"]), key="final_wealth")
+wage = st.number_input("当前年薪（大于0）", min_value=0.01,
+                       value=float(st.session_state["wage"]), key="wage")
 
-custom_income_input = st.text_area("输入自定义收入", height=100)
+grow_rate = st.slider("预期薪水增长率（-5% 到20%）",
+                      min_value=-5.0, max_value=20.0,
+                      value=float(st.session_state["grow_rate"]*100), step=0.1, key="grow_rate_pct") / 100
+# 同步回 session_state 中的浮点形式（0~1）
+st.session_state["grow_rate"] = grow_rate
+
+r_c = st.slider("年利率（最大20%，当前周期内负债较多请用贷款利率）",
+                min_value=0.0, max_value=20.0,
+                value=float(st.session_state["r_c"]*100), step=0.1, key="r_c_pct") / 100
+st.session_state["r_c"] = r_c
+
+l = st.slider("通胀率（-5% 到20%）",
+              min_value=-5.0, max_value=20.0,
+              value=float(st.session_state["l"]*100), step=0.1, key="l_pct") / 100
+st.session_state["l"] = l
+
+r_ins = st.slider("消费偏好修正（-5% 到5%，+表示偏好未来消费，-表示偏好当下消费）",
+                  min_value=-5.0, max_value=5.0,
+                  value=float(st.session_state["r_ins"]*100), step=0.1, key="r_ins_pct") / 100
+st.session_state["r_ins"] = r_ins
+
+st.subheader("自定义某些年份的收入（编号从1开始，例如： '1： 100000，5:200000'）")
+custom_income_input = st.text_area("输入自定义收入", height=100,
+                                   value=st.session_state["custom_income_str"], key="custom_income_str")
+
 
 if st.button("开始计算",disabled=not submit_enabled):
     fig, df_results, fig_inflation,c_t_total = simulate_and_output(
