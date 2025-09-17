@@ -196,7 +196,7 @@ def simulate_and_output(years, wage, A_t_init, r_c, l, grow_rate, final_wealth, 
             A_t_warn = 1
 
     if A_t_warn:
-        st.warning("当前周期内同时出现净资产和净负债，相应的，也应同时存在存款和贷款利率，因此结果可能不准确，仅供参考")
+        st.warning("当前周期内同时出现净资产和净负债，相应的，也应同时存在存款和贷款利率，因此结果会略有偏差，仅供参考")
 
     # —— 变更点：循环结束后一次性创建 DataFrame —— 
     results = pd.DataFrame(rows, columns=["年份", "年初资产", "年内收入", "全年消费", "年末资产"])
