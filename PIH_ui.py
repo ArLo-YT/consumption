@@ -336,9 +336,9 @@ st.title("消费规划模拟工具")
 # 顶部操作条：开始计算按钮上移 + 载入预设
 op_col1, op_col2 = st.columns([1, 1])
 with op_col1:
-    st.subheader("默认事例")
+    st.subheader("选择一个场景")
     preset_name = st.selectbox(
-        "选择一个场景（可随时切换，不影响你之后的手动修改）",
+        "",
         list(PRESETS.keys()), index=0
     )
     if st.button("一键填充该场景", use_container_width=True):
