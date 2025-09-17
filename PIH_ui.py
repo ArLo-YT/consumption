@@ -291,7 +291,7 @@ if st.button("开始计算",disabled=not submit_enabled):
     
     # Excel
     xbuf = BytesIO()
-    with pd.ExcelWriter(xbuf, engine="xlsxwriter") as writer:
+    with pd.ExcelWriter(xbuf, engine="openpyxl") as writer:
         df_results.to_excel(writer, sheet_name="results", index=False)
     st.download_button(
         label="下载数据（Excel）",
