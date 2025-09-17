@@ -345,7 +345,7 @@ with op_col1:
     if st.button("一键填充该场景", use_container_width=True):
         _load_preset_to_state(PRESETS[preset_name])
         st.success(f"已载入预设：{preset_name}")
-        st.caption("提示：载入后你仍可在下方继续调整所有参数。")
+        st.caption("提示：载入后你仍可在下方继续调整所有参数。调整完后点击右方开始计算。")
     st.markdown("</div>", unsafe_allow_html=True)
 
 with op_col2:
