@@ -58,7 +58,7 @@ def _beautify_axes(ax, y_ticks=6):
     # 刻度样式
     ax.yaxis.set_major_locator(MaxNLocator(nbins=y_ticks))
     ax.yaxis.set_major_formatter(FuncFormatter(_thousands))
-    ax.tick_params(axis='both', labelsize=12)
+    ax.tick_params(axis='both', labelsize=13)
     # 让线条别贴边
     ax.margins(x=0.02, y=0.08)
 
@@ -73,10 +73,9 @@ def _annotate_last(ax, xs, ys):
         xy=(x_last, y_last),
         xytext=(8, 8),
         textcoords="offset points",
-        fontsize=11,
+        fontsize=13,
         bbox=dict(boxstyle="round,pad=0.25", fc="#ffffff", ec="#cccccc", alpha=0.8)
     )
-
 
 
 # 定义函数
@@ -209,27 +208,28 @@ def simulate_and_output(years, wage, A_t_init, r_c, l, grow_rate, final_wealth, 
     # 上图：收入 & 消费（两条线）
     axs[0].plot(time, y_t, linewidth=2.2, marker='o', markersize=4, label='全年收入')
     axs[0].plot(time, c_t_list, linewidth=2.2, marker='o', markersize=4, label='全年消费')
-    axs[0].set_title('未来收入与消费', fontsize=16, pad=10)
-    axs[0].set_ylabel('金额', fontsize=12)
+    axs[0].set_title('未来收入与消费', fontsize=18, pad=12)
+    axs[0].set_ylabel('金额', fontsize=14)
     _beautify_axes(axs[0])
     _annotate_last(axs[0], time, y_t)
     _annotate_last(axs[0], time, c_t_list)
-    axs[0].legend(frameon=False, fontsize=12, ncols=2, loc='upper left')
+    axs[0].legend(frameon=False, fontsize=13, ncols=2, loc='upper left')
     
     # 下图：年末资产
     axs[1].plot(time, A_t_list, linewidth=2.2, marker='o', markersize=4)
-    axs[1].set_title('年末资产', fontsize=16, pad=10)
-    axs[1].set_xlabel('年份', fontsize=12)
-    axs[1].set_ylabel('金额', fontsize=12)
+    axs[1].set_title('年末资产', fontsize=18, pad=12)
+    axs[1].set_xlabel('年份', fontsize=14)
+    axs[1].set_ylabel('金额', fontsize=14)
+    axs[1].axhline(0, linewidth=1.0, linestyle='--', alpha=0.4)
     _beautify_axes(axs[1])
     _annotate_last(axs[1], time, A_t_list)
 
     # 新增图表：每年消费的购买力变化
     fig_inflation, ax_inflation = plt.subplots(figsize=(10, 4.5), constrained_layout=True)
     ax_inflation.plot(time, c_t_inflation_adjusted, linewidth=2.2, marker='o', markersize=4)
-    ax_inflation.set_title("通胀修正后消费购买力（以第1年物价为基准）", fontsize=16, pad=8)
-    ax_inflation.set_xlabel("年份", fontsize=12)
-    ax_inflation.set_ylabel("金额", fontsize=12)
+    ax_inflation.set_title("通胀修正后消费购买力（以第1年物价为基准）", fontsize=18, pad=10)
+    ax_inflation.set_xlabel("年份", fontsize=14)
+    ax_inflation.set_ylabel("金额", fontsize=14)
     _beautify_axes(ax_inflation, y_ticks=5)
     _annotate_last(ax_inflation, time, c_t_inflation_adjusted)
 
