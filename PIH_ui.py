@@ -239,26 +239,24 @@ def simulate_and_output(years, wage, A_t_init, r_c, l, grow_rate, final_wealth, 
 
 PRESETS = {
     "应届毕业生起步": {
-        "years": 30,
+        "years": 15,
         "A_t_init": 10000.0,
-        "final_wealth": 0.0,
+        "final_wealth": 500000.0,
         "wage": 80000.0,
         "grow_rate": 0.06,   # 6%
-        "r_c": 0.03,         # 3%
-        "l": 0.02,           # 2%
+        "r_c": 0.02,         # 3%
+        "l": 0.01,           # 2%
         "r_ins": 0.00,       # 0%
-        "custom_income_str": "5:120000, 10:180000"  # 5年&10年跳涨
     },
     "房贷+育儿期": {
-        "years": 25,
-        "A_t_init": -200000.0,
-        "final_wealth": 200000.0,
+        "years": 20,
+        "A_t_init": -1000000.0,
+        "final_wealth": 0,
         "wage": 180000.0,
         "grow_rate": 0.03,
-        "r_c": 0.045,
+        "r_c": 0.05,
         "l": 0.025,
         "r_ins": -0.01,      # 偏好当下消费
-        "custom_income_str": "1:220000, 6:260000, 12:320000"
     },
     "临近退休（稳健）": {
         "years": 20,
@@ -266,10 +264,9 @@ PRESETS = {
         "final_wealth": 500000.0,
         "wage": 150000.0,
         "grow_rate": 0.01,
-        "r_c": 0.025,
+        "r_c": 0.03,
         "l": 0.02,
         "r_ins": 0.015,      # 偏好未来消费
-        "custom_income_str": "3:180000, 8:160000, 12:140000"
     }
 }
 
