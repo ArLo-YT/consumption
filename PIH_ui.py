@@ -275,3 +275,52 @@ if st.button("开始计算",disabled=not submit_enabled):
     # st.subheader("通胀修正后的购买力总和（按照第一年物价）")
     # st.subheader(round(c_t_total,2))
 
+    # —— 下载导出区 ——
+    from io import BytesIO
+    st.subheader("下载导出")
+    
+    # CSV
+    csv_bytes = df_results.to_csv(index=False).encode("utf-8-sig")
+    st.download_button(
+        label="下载数据（CSV）",
+        data=csv_bytes,
+        file_name="消费规划结果.csv",
+        mime="text/csv",
+        use_container_width=True
+    )
+    
+    # Excel
+    xbuf = BytesIO()
+    with pd.ExcelWriter(xbuf, engine="xlsxwriter") as writer:
+        df_results.to_excel(writer, sheet_name="results", index=False)
+    st.download_button(
+        label="下载数据（Excel）",
+        data=xbuf.getvalue(),
+        file_name="消费规划结果.xlsx",
+        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        use_container_width=True
+    )
+    
+    # 图 PNG（两张）
+    def _fig_to_png_bytes(f):
+        buf = BytesIO()
+        f.savefig(buf, format="png", dpi=180, bbox_inches="tight")
+        buf.seek(0)
+        return buf
+    
+    st.download_button(
+        label="下载图像（收入-消费-资产 PNG）",
+        data=_fig_to_png_bytes(fig).getvalue(),
+        file_name="income_consumption_assets.png",
+        mime="image/png",
+        use_container_width=True
+    )
+    st.download_button(
+        label="下载图像（通胀修正后购买力 PNG）",
+        data=_fig_to_png_bytes(fig_inflation).getvalue(),
+        file_name="inflation_adjusted_consumption.png",
+        mime="image/png",
+        use_container_width=True
+    )
+
+
