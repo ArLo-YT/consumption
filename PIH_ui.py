@@ -268,6 +268,19 @@ PRESETS = {
         "l": 0.015,
         "r_ins": 0.005,      # 偏好未来消费
     }
+    "天降横财": {
+        "years": 30,
+        "A_t_init": 50000.0,
+        "final_wealth": 300000.0,
+        "wage": 120000.0,
+        "grow_rate": 0.00,   
+        "r_c": 0.02,         
+        "l": 0.01,           
+        "r_ins": 0.005,      
+        # 第 7 年获得 100 万的一次性横财（注意：年份从 1 开始）
+        "custom_income_str": "7:1050000"
+    },
+
 }
 
 def _load_preset_to_state(preset: dict):
