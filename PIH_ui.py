@@ -247,6 +247,7 @@ PRESETS = {
         "r_c": 0.02,         # 3%
         "l": 0.01,           # 2%
         "r_ins": 0.00,       # 0%
+        "custom_income_str": ""
     },
     "房贷+育儿期": {
         "years": 20,
@@ -257,6 +258,7 @@ PRESETS = {
         "r_c": 0.05,
         "l": 0.025,
         "r_ins": -0.005,      # 偏好当下消费
+        "custom_income_str": ""
     },
     "临近退休": {
         "years": 20,
@@ -267,6 +269,7 @@ PRESETS = {
         "r_c": 0.03,
         "l": 0.015,
         "r_ins": 0.005,      # 偏好未来消费
+        "custom_income_str": ""
     },
     "天降横财": {
         "years": 30,
@@ -288,7 +291,8 @@ PRESETS = {
         "grow_rate": 0.00,   
         "r_c": 0.03,         
         "l": 0.02,           
-        "r_ins": 0.005,      
+        "r_ins": 0.005,
+        "custom_income_str": ""
     },
 
 }
