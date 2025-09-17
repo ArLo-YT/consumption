@@ -240,7 +240,7 @@ def simulate_and_output(years, wage, A_t_init, r_c, l, grow_rate, final_wealth, 
 PRESETS = {
     "应届毕业生起步": {
         "years": 15,
-        "A_t_init": 10000.0,
+        "A_t_init": 20000.0,
         "final_wealth": 500000.0,
         "wage": 80000.0,
         "grow_rate": 0.06,   # 6%
