@@ -394,8 +394,8 @@ if st.session_state.get("show_results") and st.session_state.get("out_df") is no
     st.dataframe(st.session_state["out_df"])
 
     st.subheader("图表")
-    st.image(st.session_state["out_png_main"], use_column_width=True, caption="收入-消费-资产")
-    st.image(st.session_state["out_png_infl"], use_column_width=True, caption="通胀修正后的购买力")
+    st.image(st.session_state["out_png_main"], use_container_width=True, caption="收入-消费-资产")
+    st.image(st.session_state["out_png_infl"], use_container_width=True, caption="通胀修正后的购买力")
 
     st.subheader("下载导出")
     st.download_button(
