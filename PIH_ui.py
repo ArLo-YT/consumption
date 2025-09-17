@@ -291,14 +291,14 @@ st.title("消费规划模拟工具")
 
 # ==== Presets（默认事例）UI：选择 & 一键填充 ====
 st.subheader("默认事例")
-col1, col2 = st.columns([2, 1])
-with col1:
-    preset_name = st.selectbox("选择一个场景（可随时切换，不影响你之后的手动修改）",
-                               list(PRESETS.keys()), index=0)
-with col2:
-    if st.button("一键填充该场景"):
-        _load_preset_to_state(PRESETS[preset_name])
-        st.success(f"已载入预设：{preset_name}")
+preset_name = st.selectbox(
+    "选择一个场景（可随时切换，不影响你之后的手动修改）",
+    list(PRESETS.keys()), index=0
+)
+
+if st.button("一键填充该场景"):
+    _load_preset_to_state(PRESETS[preset_name])
+    st.success(f"已载入预设：{preset_name}")
 
 st.caption("提示：载入后你仍可在下方继续微调所有参数；“自定义收入”会被预设覆盖为对应示例。")
 
