@@ -338,7 +338,6 @@ op_col1, op_col2 = st.columns([1, 1])
 with op_col1:
     st.subheader("选择一个场景")
     preset_name = st.selectbox(
-        "",
         list(PRESETS.keys()), index=0
     )
     if st.button("一键填充该场景", use_container_width=True):
