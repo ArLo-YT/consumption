@@ -342,7 +342,7 @@ with op_col1:
     st.markdown("<div class='op-card'>", unsafe_allow_html=True)
     st.subheader("默认例子")
     preset_name = st.selectbox("", list(PRESETS.keys()), index=0, label_visibility="collapsed" )
-    if st.button("一键填充该场景", use_container_width=True):
+    if st.button("一键载入该场景", use_container_width=True):
         _load_preset_to_state(PRESETS[preset_name])
         st.success(f"已载入预设：{preset_name}")
         st.caption("提示：载入后你仍可在下方继续调整所有参数。调整完后点击右方开始计算。")
