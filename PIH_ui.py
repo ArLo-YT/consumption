@@ -282,15 +282,15 @@ PRESETS = {
     },
     "天降横财": {
         "years": 30,
-        "A_t_init": 100000.0,
-        "final_wealth": 350000.0,
-        "wage": 80000.0,
+        "A_t_init": 0.0,
+        "final_wealth": 0.0,
+        "wage": 100000.0,
         "grow_rate": 0.00,
         "r_c": 0.02,
         "l": 0.01,
-        "r_ins": 0.005,
+        "r_ins": 0.00,
         # 第 7 年获得 100 万的一次性横财（注意：年份从 1 开始）
-        "custom_income_str": "7:1080000"
+        "custom_income_str": "1:8100000"
     },
     "坐吃山空": {
         "years": 40,
