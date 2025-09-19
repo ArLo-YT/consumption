@@ -399,7 +399,7 @@ with st.container():
                       value=float(st.session_state["r_ins"]*100), step=0.1, key="r_ins_pct") / 100
     st.session_state["r_ins"] = r_ins
 
-    st.subheader("自定义某些年份的收入（编号从1开始，例如： '1:100000, 5:200000'）")
+    st.subheader("自定义某些年份的收入（例如： '1:100000, 5:200000'表示第一年收入10万，第五年收入20万）")
     custom_income_input = st.text_area("输入自定义收入", height=100,
                                        value=st.session_state["custom_income_str"], key="custom_income_str")
 
